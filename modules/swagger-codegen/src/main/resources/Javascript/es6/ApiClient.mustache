@@ -92,7 +92,8 @@ export default class ApiClient {
     * @returns {String} The string representation of <code>param</code>.
     */{{/emitJSDoc}}
     paramToString(param) {
-        if (param == undefined || param == null) {
+        // eslint-disable-next-line
+        if (param == undefined || param == null) { 
             return '';
         }
         if (param instanceof Date) {
@@ -141,7 +142,8 @@ export default class ApiClient {
     * @returns {Boolean} <code>true</code> if <code>contentType</code> represents JSON, otherwise <code>false</code>.
     */{{/emitJSDoc}}
     isJsonMime(contentType) {
-        return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i));
+        // eslint-disable-next-line
+        return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i)); 
     }
 
     {{#emitJSDoc}}/**
@@ -208,7 +210,8 @@ export default class ApiClient {
     normalizeParams(params) {
         var newParams = {};
         for (var key in params) {
-            if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) {
+            // eslint-disable-next-line
+            if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) { 
                 var value = params[key];
                 if (this.isFileParam(value) || Array.isArray(value)) {
                     newParams[key] = value;
@@ -266,7 +269,8 @@ export default class ApiClient {
     * <code>param</code> as is if <code>collectionFormat</code> is <code>multi</code>.
     */{{/emitJSDoc}}
     buildCollectionParam(param, collectionFormat) {
-        if (param == null) {
+        // eslint-disable-next-line
+        if (param == null) { 
             return null;
         }
         switch (collectionFormat) {
@@ -341,14 +345,16 @@ export default class ApiClient {
     */
     {{/emitJSDoc}}
     deserialize(response, returnType) {
-        if (response == null || returnType == null || response.status == 204) {
+        // eslint-disable-next-line
+        if (response == null || returnType == null || response.status === 204) { 
             return null;
         }
 
         // Rely on SuperAgent for parsing response body.
         // See http://visionmedia.github.io/superagent/#parsing-response-bodies
         var data = response.body;
-        if (data == null || (typeof data === 'object' && typeof data.length === 'undefined' && !Object.keys(data).length)) {
+        // eslint-disable-next-line
+        if (data == null || (typeof data === 'object' && typeof data.length === 'undefined' && !Object.keys(data).length)) { 
             // SuperAgent does not always produce a body; use the unparsed response as a fallback
             data = response.text;
         }
@@ -413,7 +419,7 @@ export default class ApiClient {
         var contentType = this.jsonPreferredMime(contentTypes);
         if (contentType) {
             // Issue with superagent and multipart/form-data (https://github.com/visionmedia/superagent/issues/746)
-            if(contentType != 'multipart/form-data') {
+            if(contentType !== 'multipart/form-data') {
                 request.type(contentType);
             }
         } else if (!request.header['Content-Type']) {
@@ -422,7 +428,7 @@ export default class ApiClient {
 
         if (contentType === 'application/x-www-form-urlencoded') {
             request.send(querystring.stringify(this.normalizeParams(formParams)));
-        } else if (contentType == 'multipart/form-data') {
+        } else if (contentType === 'multipart/form-data') {
             var _formParams = this.normalizeParams(formParams);
             for (var key in _formParams) {
                 if (_formParams.hasOwnProperty(key)) {
@@ -552,19 +558,19 @@ export default class ApiClient {
                 } else if (typeof type === 'object') {
                     // for plain object type like: {'String': 'Integer'}
                     var keyType, valueType;
-                    for (var k in type) {
-                        if (type.hasOwnProperty(k)) {
-                            keyType = k;
-                            valueType = type[k];
+                    for (var kt in type) {
+                        if (type.hasOwnProperty(kt)) {
+                            keyType = kt;
+                            valueType = type[kt];
                             break;
                         }
                     }
 
                     var result = {};
-                    for (var k in data) {
-                        if (data.hasOwnProperty(k)) {
-                            var key = ApiClient.convertToType(k, keyType);
-                            var value = ApiClient.convertToType(data[k], valueType);
+                    for (var kd in data) {
+                        if (data.hasOwnProperty(kd)) {
+                            var key = ApiClient.convertToType(kd, keyType);
+                            var value = ApiClient.convertToType(data[kd], valueType);
                             result[key] = value;
                         }
                     }

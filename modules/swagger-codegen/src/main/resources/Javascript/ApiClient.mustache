@@ -103,7 +103,8 @@
    * @returns {String} The string representation of <code>param</code>.
    */
 {{/emitJSDoc}}  exports.prototype.paramToString = function(param) {
-    if (param == undefined || param == null) {
+    // eslint-disable-next-line
+    if (param == undefined || param == null) { 
       return '';
     }
     if (param instanceof Date) {
@@ -149,7 +150,8 @@
    * @returns {Boolean} <code>true</code> if <code>contentType</code> represents JSON, otherwise <code>false</code>.
    */
 {{/emitJSDoc}}  exports.prototype.isJsonMime = function(contentType) {
-    return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i));
+    // eslint-disable-next-line
+    return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i)); 
   };
 
 {{#emitJSDoc}}  /**
@@ -210,7 +212,8 @@
 {{/emitJSDoc}}  exports.prototype.normalizeParams = function(params) {
     var newParams = {};
     for (var key in params) {
-      if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) {
+      // eslint-disable-next-line
+      if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) { 
         var value = params[key];
         if (this.isFileParam(value) || Array.isArray(value)) {
           newParams[key] = value;
@@ -263,7 +266,8 @@
    * <code>param</code> as is if <code>collectionFormat</code> is <code>multi</code>.
    */
 {{/emitJSDoc}}  exports.prototype.buildCollectionParam = function buildCollectionParam(param, collectionFormat) {
-    if (param == null) {
+    // eslint-disable-next-line
+    if (param == null) { 
       return null;
     }
     switch (collectionFormat) {
@@ -334,13 +338,15 @@
    * @returns A value of the specified type.
    */
 {{/emitJSDoc}}  exports.prototype.deserialize = function deserialize(response, returnType) {
-    if (response == null || returnType == null || response.status == 204) {
+    // eslint-disable-next-line
+    if (response == null || returnType == null || response.status === 204) { 
       return null;
     }
     // Rely on SuperAgent for parsing response body.
     // See http://visionmedia.github.io/superagent/#parsing-response-bodies
     var data = response.body;
-    if (data == null || (typeof data === 'object' && typeof data.length === 'undefined' && !Object.keys(data).length)) {
+    // eslint-disable-next-line
+    if (data == null || (typeof data === 'object' && typeof data.length === 'undefined' && !Object.keys(data).length)) { 
       // SuperAgent does not always produce a body; use the unparsed response as a fallback
       data = response.text;
     }
@@ -392,7 +398,8 @@
           // SuperAgent normally percent-encodes all reserved characters in a query parameter. However,
           // commas are used as delimiters for the 'csv' collectionFormat so they must not be encoded. We
           // must therefore construct and encode 'csv' collection query parameters manually.
-          if (param.value != null) {
+          // eslint-disable-next-line
+          if (param.value != null) { 
             var value = param.value.map(this.paramToString).map(encodeURIComponent).join(',');
             request.query(encodeURIComponent(key) + "=" + value);
           }
@@ -424,7 +431,7 @@
     var contentType = this.jsonPreferredMime(contentTypes);
     if (contentType) {
       // Issue with superagent and multipart/form-data (https://github.com/visionmedia/superagent/issues/746)
-      if(contentType != 'multipart/form-data') {
+      if(contentType !== 'multipart/form-data') {
         request.type(contentType);
       }
     } else if (!request.header['Content-Type']) {
@@ -433,7 +440,7 @@
 
     if (contentType === 'application/x-www-form-urlencoded') {
       request.send(querystring.stringify(this.normalizeParams(formParams)));
-    } else if (contentType == 'multipart/form-data') {
+    } else if (contentType === 'multipart/form-data') {
       var _formParams = this.normalizeParams(formParams);
       for (var key in _formParams) {
         if (_formParams.hasOwnProperty(key)) {
@@ -558,18 +565,18 @@
         } else if (typeof type === 'object') {
           // for plain object type like: {'String': 'Integer'}
           var keyType, valueType;
-          for (var k in type) {
-            if (type.hasOwnProperty(k)) {
-              keyType = k;
-              valueType = type[k];
+          for (var kt in type) {
+            if (type.hasOwnProperty(kt)) {
+              keyType = kt;
+              valueType = type[kt];
               break;
             }
           }
           var result = {};
-          for (var k in data) {
-            if (data.hasOwnProperty(k)) {
-              var key = exports.convertToType(k, keyType);
-              var value = exports.convertToType(data[k], valueType);
+          for (var kd in data) {
+            if (data.hasOwnProperty(kd)) {
+              var key = exports.convertToType(kd, keyType);
+              var value = exports.convertToType(data[kd], valueType);
               result[key] = value;
             }
           }
