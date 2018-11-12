@@ -1,5 +1,7 @@
 {{>licenseInfo}}
 
+/* eslint-disable */
+
 import superagent from "superagent";
 import querystring from "querystring";
 
@@ -92,7 +94,6 @@ export default class ApiClient {
     * @returns {String} The string representation of <code>param</code>.
     */{{/emitJSDoc}}
     paramToString(param) {
-        // eslint-disable-next-line
         if (param == undefined || param == null) { 
             return '';
         }
@@ -142,7 +143,6 @@ export default class ApiClient {
     * @returns {Boolean} <code>true</code> if <code>contentType</code> represents JSON, otherwise <code>false</code>.
     */{{/emitJSDoc}}
     isJsonMime(contentType) {
-        // eslint-disable-next-line
         return Boolean(contentType != null && contentType.match(/^application\/json(;.*)?$/i)); 
     }
 
@@ -210,7 +210,6 @@ export default class ApiClient {
     normalizeParams(params) {
         var newParams = {};
         for (var key in params) {
-            // eslint-disable-next-line
             if (params.hasOwnProperty(key) && params[key] != undefined && params[key] != null) { 
                 var value = params[key];
                 if (this.isFileParam(value) || Array.isArray(value)) {
@@ -269,7 +268,6 @@ export default class ApiClient {
     * <code>param</code> as is if <code>collectionFormat</code> is <code>multi</code>.
     */{{/emitJSDoc}}
     buildCollectionParam(param, collectionFormat) {
-        // eslint-disable-next-line
         if (param == null) { 
             return null;
         }
@@ -345,7 +343,6 @@ export default class ApiClient {
     */
     {{/emitJSDoc}}
     deserialize(response, returnType) {
-        // eslint-disable-next-line
         if (response == null || returnType == null || response.status === 204) { 
             return null;
         }
@@ -353,7 +350,6 @@ export default class ApiClient {
         // Rely on SuperAgent for parsing response body.
         // See http://visionmedia.github.io/superagent/#parsing-response-bodies
         var data = response.body;
-        // eslint-disable-next-line
         if (data == null || (typeof data === 'object' && typeof data.length === 'undefined' && !Object.keys(data).length)) { 
             // SuperAgent does not always produce a body; use the unparsed response as a fallback
             data = response.text;
